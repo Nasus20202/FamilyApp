@@ -11,28 +11,6 @@ namespace FamilyApp
     {
         public IActionResult Index()
         {
-            var model = new BaseViewModel("Join");
-            using (var db = new Database())
-            {
-                if (User.Identity.IsAuthenticated)
-                {
-                    var user = (from c in db.Users
-                                where c.Email == User.Identity.Name
-                                select c).FirstOrDefault();
-                    model.User.Name = user.Name;
-                    model.User.Surname = user.Surname;
-                    model.User.Email = user.Email;
-                    model.User.FamilyId = user.FamilyId;
-                }
-            }
-
-            return View(model);
-        }
-
-        [HttpGet]
-        [Route("/join")]
-        public IActionResult Join()
-        {
             var model = new BaseViewModel("Family");
             using (var db = new Database())
             {
@@ -45,6 +23,40 @@ namespace FamilyApp
                     model.User.Surname = user.Surname;
                     model.User.Email = user.Email;
                     model.User.FamilyId = user.FamilyId;
+                    if(user.FamilyId == null)
+                    {
+                        return View("start", model);
+                    }
+                }
+                else
+                {
+                    return View("start", model);
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [Route("/join")]
+        public IActionResult Join()
+        {
+            var model = new BaseViewModel("Join family");
+            using (var db = new Database())
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var user = (from c in db.Users
+                                where c.Email == User.Identity.Name
+                                select c).FirstOrDefault();
+                    model.User.Name = user.Name;
+                    model.User.Surname = user.Surname;
+                    model.User.Email = user.Email;
+                    model.User.FamilyId = user.FamilyId;
+                }
+                else
+                {
+                    return Redirect(Url.Action("login", "account"));
                 }
             }
             return View(model);
@@ -52,8 +64,54 @@ namespace FamilyApp
 
         [HttpPost]
         [Route("/join")]
-        public IActionResult Join(int code)
+        public IActionResult Join(string code)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect(Url.Action("login", "account"));
+            }
+            var model = new BaseViewModel("Join family");
+            using (var db = new Database())
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var user = (from c in db.Users
+                                where c.Email == User.Identity.Name
+                                select c).FirstOrDefault();
+                    model.User.Name = user.Name;
+                    model.User.Surname = user.Surname;
+                    model.User.Email = user.Email;
+                    model.User.FamilyId = user.FamilyId;
+                }
+            }
+            model.Message = "The code is invalid!";
+            if (code == null)
+            {
+                return View(model);
+            }
+            bool valid = code.Length == 10 ? true : false;
+            foreach (char c in code)
+            {
+                if (c < '0' || c > '9')
+                {
+                    valid = false; break;
+                }
+            }
+            if (!valid)
+            {
+                return View(model);
+            }
+            using (var db = new Database())
+            {
+                Family family = db.Families.Where(f => f.Code == code).FirstOrDefault();
+                if (family == null) {
+                    model.Message = "No family is associated with this code!";
+                    return View(model);
+                }
+                User user = db.Users.Where(u => u.Email == User.Identity.Name).FirstOrDefault();
+                user.FamilyId = family.FamilyId;
+                db.SaveChanges();
+            }
             return Redirect("/");
         }
 

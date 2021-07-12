@@ -7,12 +7,14 @@ namespace FamilyApp
 {
     public class BaseViewModel
     {
-        public BaseViewModel(string title = "")
+        public BaseViewModel(string title = "", string message = "")
         {
             Title = title;
+            Message = message;
             User = new UserData();
         }
         public string Title { get; set; }
+        public string Message { get; set; }
         public UserData User { get; set; }
     }
     public class UserData
