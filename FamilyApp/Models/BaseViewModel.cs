@@ -7,12 +7,14 @@ namespace FamilyApp
 {
     public class BaseViewModel
     {
-        public BaseViewModel(string title = "")
+        public BaseViewModel(string title = "", string message = "")
         {
             Title = title;
+            Message = message;
             User = new UserData();
         }
         public string Title { get; set; }
+        public string Message { get; set; }
         public UserData User { get; set; }
     }
     public class UserData
@@ -21,7 +23,7 @@ namespace FamilyApp
         public string Surname { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string Role { get; set; }
-        public string Address { get; set; }
+
+        public int? FamilyId { get; set; }
     }
 }

@@ -3,30 +3,31 @@
     Layout = "_Layout";
 }
 <br />
-<h2 style="text-align:center" class="display-4">Twoje konto</h2>
+<h2 style="text-align:center" class="display-4">Your account</h2>
 <br />
 <table class="table">
     <tbody>
         <tr>
-            <th scope="row">Imię</th>
+            <th scope="row">Name</th>
             <td>@Model.User.Name</td>
         </tr>
         <tr>
-            <th scope="row">Nazwisko</th>
+            <th scope="row">Surname</th>
             <td>@Model.User.Surname</td>
         </tr>
         <tr>
-            <th scope="row">Adres email</th>
+            <th scope="row">Email</th>
             <td>@Model.User.Email</td>
         </tr>
+        @if (Model.User.FamilyId != null)
+        {
         <tr>
-            <th scope="row">Numer telefonu</th>
-            <td>@Model.User.Phone</td>
+            <th scope="row">Family</th>
+            <td>@Model.User.FamilyId</td>
         </tr>
-        <tr>
-            <th scope="row">Adres domowy</th>
-            <td>@Model.User.Address</td>
-        </tr>
+        }
     </tbody>
 </table>
-<a href="@Url.Action("edit", "account")" class="btn btn-outline-primary btn-lg btn-block">Zmień dane konta</a>
+<div class="d-grid gap-2 col-8 mx-auto">
+    <a href="@Url.Action("edit", "account")" class="btn btn-outline-primary btn-lg btn-block">Edit your account</a>
+</div>

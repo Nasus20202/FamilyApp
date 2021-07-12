@@ -7,14 +7,14 @@ namespace FamilyApp
 {
     public class AccountModel : BaseViewModel
     {
-        public AccountModel(string title) : base(title) { Message = ""; }
-        public AccountModel() : base("") { Message = ""; }
+        public AccountModel(string title = "", string message = "") : base(title, message) {}
+        public AccountModel(string title = "") : base(title, "") { }
+        public AccountModel() : base("", "") { }
 
         public string Login { get; set; }
         public string Password { get; set; }
         public string Password2 { get; set; }
         public string OldPassword { get; set; }
-        public string Message { get; set; }
         public bool RememberMe { get; set; }
     }
 }

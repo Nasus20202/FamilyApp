@@ -11,6 +11,8 @@ namespace FamilyApp
         public static string ConnectionString = "";
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Family> Families { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var serverVerison = new MySqlServerVersion(new Version(8, 0, 25));
