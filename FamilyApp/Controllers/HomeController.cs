@@ -11,6 +11,28 @@ namespace FamilyApp
     {
         public IActionResult Index()
         {
+            var model = new BaseViewModel("Join");
+            using (var db = new Database())
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var user = (from c in db.Users
+                                where c.Email == User.Identity.Name
+                                select c).FirstOrDefault();
+                    model.User.Name = user.Name;
+                    model.User.Surname = user.Surname;
+                    model.User.Email = user.Email;
+                    model.User.FamilyId = user.FamilyId;
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [Route("/join")]
+        public IActionResult Join()
+        {
             var model = new BaseViewModel("Family");
             using (var db = new Database())
             {
@@ -22,10 +44,17 @@ namespace FamilyApp
                     model.User.Name = user.Name;
                     model.User.Surname = user.Surname;
                     model.User.Email = user.Email;
+                    model.User.FamilyId = user.FamilyId;
                 }
             }
-
             return View(model);
+        }
+
+        [HttpPost]
+        [Route("/join")]
+        public IActionResult Join(int code)
+        {
+            return Redirect("/");
         }
 
         [Route("/Error/{code:int}")]
@@ -42,6 +71,7 @@ namespace FamilyApp
                     model.User.Name = user.Name;
                     model.User.Surname = user.Surname;
                     model.User.Email = user.Email;
+                    model.User.FamilyId = user.FamilyId;
                 }
             }
             ViewData["errorCode"] = code;

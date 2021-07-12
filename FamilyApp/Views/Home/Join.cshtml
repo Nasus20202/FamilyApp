@@ -1,0 +1,17 @@
+﻿@using FamilyApp
+@{
+    Layout = "_Layout";
+}
+
+<br />
+<h2 style="text-align:center" class="display-4">Join your Family</h2>
+<br />
+<form action="/join" method="post">
+    <label for="code" class="form-label">Family code</label>
+    <input class="form-control" name="code" asp-for="code" type="number" />
+    <div class="d-grid gap-2 col-8 mx-auto" style="margin-top: 20px">
+        <button type="submit" class="btn btn-primary">Join</button>
+    </div>
+</form>
+
+

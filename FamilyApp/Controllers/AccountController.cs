@@ -28,6 +28,7 @@ namespace FamilyApp
                     model.User.Name = user.Name;
                     model.User.Surname = user.Surname;
                     model.User.Email = user.Email;
+                    model.User.FamilyId = user.FamilyId;
                 }
             }
             
@@ -51,6 +52,7 @@ namespace FamilyApp
                     input.User.Name = user.Name;
                     input.User.Surname = user.Surname;
                     input.User.Email = user.Email;
+                    input.User.FamilyId = user.FamilyId;
                 }
             }
 
@@ -219,6 +221,7 @@ namespace FamilyApp
                     model.User.Name = user.Name;
                     model.User.Surname = user.Surname;
                     model.User.Email = user.Email;
+                    model.User.FamilyId = user.FamilyId;
                 }
             }
             return View(model);

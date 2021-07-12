@@ -3,14 +3,16 @@ using System;
 using FamilyApp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FamilyApp.Migrations
 {
     [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20210712172149_code")]
+    partial class code
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,8 +25,8 @@ namespace FamilyApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Code")
-                        .HasColumnType("longtext");
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Enabled")
                         .HasColumnType("tinyint(1)");
