@@ -17,7 +17,7 @@ namespace FamilyApp
         [Authorize]
         public IActionResult Index()
         {
-            var model = new AccountModel("Moje konto");
+            var model = new AccountModel("Your account");
             if (User.Identity.IsAuthenticated)
             {
                 using (var db = new Database())
@@ -40,7 +40,7 @@ namespace FamilyApp
         {
             if (input == null)
                 input = new AccountModel();
-            input.Title = "Edytuj konto";
+            input.Title = "Edit your account";
             if (User.Identity.IsAuthenticated)
             {
                 using (var db = new Database())
@@ -106,18 +106,18 @@ namespace FamilyApp
         {
             if (input == null)
                 input = new AccountModel();
-            input.Title = "Zaloguj się";
+            input.Title = "Sign in";
             return View(input);
         }
         [HttpPost]
         [ActionName("Login")]
         public async Task<IActionResult> TryLogin(AccountModel input, [FromQuery] string ReturnUrl)
         {
-            input.Title = "Zaloguj się";
+            input.Title = "Sign in";
             bool status = AreCredentialsValid(input.Login, input.Password);
             if (!status)
             {
-                input.Message = "Niepoprawny email lub hasło";
+                input.Message = "Email or password is incorrect";
             }
             else
             {
@@ -160,7 +160,7 @@ namespace FamilyApp
         {
             if(User.Identity.IsAuthenticated)
                 return Redirect(Url.Action("index", "home"));
-            var model = new AccountModel("Zarejestruj się");
+            var model = new AccountModel("Sing up");
             return View(model);
         }
         [HttpPost]
@@ -171,14 +171,14 @@ namespace FamilyApp
             {
                 if(input.Password != input.Password2)
                 {
-                    input.Message = "Hasła nie zgadzają się";
+                    input.Message = "Passwords don't match";
                 }
                 else
                 {
                     if(input.User.Email == null || !input.User.Email.Contains('@') || input.User.Email.Length > 128 || input.User.Name == null || input.User.Name.Length > 64 || input.User.Surname == null || input.User.Surname.Length > 64 || input.Password == null || input.Password.Length > 128)
                     {
-                        input.Message = "Niepoprawne dane";
-                        input.Title = "Zarejestruj się";
+                        input.Message = "Wrong input";
+                        input.Title = "Sing up";
                         return View(input);
                     }
                     var user = new User();
@@ -200,7 +200,7 @@ namespace FamilyApp
             }
             else
             {
-                input.Message = "Email " + input.User.Email + " jest już zajęty";
+                input.Message = "Email " + input.User.Email + " is already taken";
             }
             input.Title = "Zarejestruj się";
             return View(input);
@@ -208,7 +208,7 @@ namespace FamilyApp
 
         public IActionResult Denied()
         {
-            var model = new BaseViewModel("Odmowa dostępu");
+            var model = new BaseViewModel("Access denied");
             if (User.Identity.IsAuthenticated)
             {
                 using (var db = new Database())

@@ -11,7 +11,7 @@ namespace FamilyApp
     {
         public IActionResult Index()
         {
-            var model = new BaseViewModel("Sklep");
+            var model = new BaseViewModel("Family");
             using (var db = new Database())
             {
                 if (User.Identity.IsAuthenticated)
@@ -31,7 +31,7 @@ namespace FamilyApp
         [Route("/Error/{code:int}")]
         public IActionResult Error(int code)
         {
-            var model = new BaseViewModel("Sklep");
+            var model = new BaseViewModel("Error");
             if (User.Identity.IsAuthenticated)
             {
                 using (var db = new Database())
@@ -48,9 +48,9 @@ namespace FamilyApp
             ViewData["aboutError"] = "";
             if(code == 404)
             {
-                ViewData["aboutError"] = "Przepraszamy, ale strona o podanym adresie nie istnieje";
+                ViewData["aboutError"] = "This page doesn't exist";
             }
-            model.Title = "Wystąpił błąd";
+            model.Title = "An error occured";
             return View(model);
         }
     }

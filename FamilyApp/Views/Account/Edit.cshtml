@@ -11,49 +11,46 @@
     }
 </script>
 <br />
-<h2 style="text-align:center">Edytuj informacje o koncie</h2>
+<h2 style="text-align:center">Edit your account</h2>
 <br />
 <span class="text-success">@Model.Message</span>
 <br />
 <form controller="Account" action="Edit" method="post">
     <div class="row">
         <div class="col">
-            <label for="User.Name" asp-for="@Model.User.Name">Imię</label>
+            <label for="User.Name" asp-for="@Model.User.Name">Name</label>
             <input type="text" name="User.Name" class="form-control" asp-for="@Model.User.Name" pattern=".{3,64}" value="@Model.User.Name">
         </div>
         <div class="col">
-            <label for="User.Surname" asp-for="@Model.User.Surname">Nazwisko</label>
+            <label for="User.Surname" asp-for="@Model.User.Surname">Surname</label>
             <input type="text" name="User.Surname" asp-for="@Model.User.Surname" pattern=".{3,64}" class="form-control" value="@Model.User.Surname">
         </div>
     </div>
     <div class="form-group">
-        <label for="User.Email" asp-for="@Model.User.Email">Adres email</label>
+        <label for="User.Email" asp-for="@Model.User.Email">Email</label>
         <input type="email" class="form-control" asp-for="@Model.User.Email" name="User.Email" pattern=".{5,128}" value="@Model.User.Email">
     </div>
-
-    <div class="form-group">
-        <label for="User.Address" asp-for="@Model.User.Address">Adres</label>
-        <input type="text" class="form-control" name="User.Address" asp-for="@Model.User.Address" placeholder="Ulica, Kod pocztowy, Miasto" pattern=".{5,128}" value="@Model.User.Address">
+    <div class="d-grid gap-2 col-8 mx-auto">
+        <button type="button" class="btn btn-outline-primary btn-sm" id="passwordShow" onclick="showPasswordChange()" style="margin-bottom:7px">Change password</button>
     </div>
-    <div class="form-group">
-        <label for="User.Phone" asp-for="@Model.User.Phone">Numer telefonu</label>
-        <input type="text" class="form-control" name="User.Phone" asp-for="@Model.User.Phone" pattern=".{9,16}" value="@Model.User.Phone">
-    </div>
-    <button type="button" class="btn btn-outline-primary btn-sm btn-block" id="passwordShow" onclick="showPasswordChange()" style="margin-bottom:7px">Zmień hasło</button>
     <div class="form-group" id="changePassword" style="display:none">
-        Nowe hasło (co najmiej 8 znaków)
+        New password (at least 8 characters)
         <div class="form-group">
-            <input type="password" name="Password" asp-for="@Model.Password" pattern=".{8,128}" class="form-control" placeholder="Nowe hasło">
+            <input type="password" name="Password" asp-for="@Model.Password" pattern=".{8,128}" class="form-control" placeholder="New password">
         </div>
-        Powtórz hasło
+        Repeat password
         <div class="form-group">
-            <input type="password" name="Password2" asp-for="@Model.Password2" pattern=".{8,128}" class="form-control" placeholder="Powtórz hasło">
+            <input type="password" name="Password2" asp-for="@Model.Password2" pattern=".{8,128}" class="form-control" placeholder="Repeat password">
         </div>
-        Obecne hasło
+        Old password
         <div class="form-group">
-            <input type="password" name="OldPassword" asp-for="@Model.OldPassword" pattern=".{8,128}" class="form-control" placeholder="Stare hasło">
+            <input type="password" name="OldPassword" asp-for="@Model.OldPassword" pattern=".{8,128}" class="form-control" placeholder="Old password">
         </div>
     </div>
-    <button type="submit" class="btn btn-primary btn-lg btn-block">Zaaktualizuj dane konta</button>
+    <div class="d-grid gap-2 col-8 mx-auto">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Update your account</button>
+    </div>
 </form>
-<a href="@Url.Action("index", "account")" class="btn btn-outline-primary btn-lg btn-block" style="margin-top: 7px">Powrót do konta</a>
+<div class="d-grid gap-2 col-8 mx-auto">
+    <a href="@Url.Action("index", "account")" class="btn btn-outline-primary btn-lg btn-block" style="margin-top: 7px">Go back</a>
+</div>
