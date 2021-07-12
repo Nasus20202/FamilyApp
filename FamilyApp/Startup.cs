@@ -38,7 +38,7 @@ namespace FamilyApp
             }).AddCookie(options =>
             {
                 options.LoginPath = new PathString("/Account/Login");
-                options.Cookie.Name = "familyAppCookie";
+                options.Cookie.Name = "familyCookie";
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                 options.SlidingExpiration = true;
                 options.AccessDeniedPath = new PathString("/Account/Denied");
@@ -49,7 +49,7 @@ namespace FamilyApp
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.IsEssential = true;
-                options.Cookie.Name = ".Nasus.Session";
+                options.Cookie.Name = ".Family.Session";
             });
             _productionConnectionString = Configuration["production_string"];
             _developmentConnectionString = Configuration["development_string"];

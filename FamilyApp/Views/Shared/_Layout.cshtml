@@ -19,12 +19,56 @@
 </head>
 <body onload="onStart()">
 
-
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav d-flex">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Account <i class="bi-person-circle"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end fadein" aria-labelledby="navbarDropdown">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li><a class="dropdown-item" href="@Url.Action("index", "account")">@Model.User.Name @Model.User.Surname</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="@Url.Action("logout", "account")">Log out <i class="bi-person-dash"></i></a></li>
+                            }
+                            else
+                            {
+                                <li><a class="dropdown-item" href="@Url.Action("login", "account")">Sign in <i class="bi-person-check"></i></a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="@Url.Action("register", "account")">Sign up <i class="bi-person-plus"></i></a></li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col">
+            <div class="col-md-2 order-md-1">
+            </div>
+            <div class="col-md-2 order-md-12">
+            </div>
+            <div class="col-md-8 order-md-6">
                 @RenderBody()
             </div>
+        </div>
+        <div class="row">
+            <div class="col">@RenderSection("left", false)</div>
+            <div class="col">@RenderSection("center", false)</div>
+            <div class="col">@RenderSection("right", false)</div>
         </div>
     </div>
 
@@ -33,9 +77,10 @@
     <div class="navbar fixed-bottom bg-light navbar-light" style="margin-top: 15px; margin-right: 20px; margin-left: 20px;">
         Family App &copy 2021
         <div class="float-left" id="cookieInfo">
-            Ta strona korzysta z ciasteczek. Dalsze korzystanie ze strony oznacza, że zgadzasz się na ich użycie.
+            This website uses cookies. Click OK to accept the use of them.
             <button type="button" class="btn btn-sm btn-outline-success" onclick="hideCookies()" style="margin-left: 10px">OK</button>
         </div>
     </div>
 </body>
+@RenderSection("modal", false)
 </html>

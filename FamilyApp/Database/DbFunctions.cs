@@ -59,9 +59,7 @@ namespace FamilyApp
                 user.Surname = updatedUser.Surname;
                 user.Email = updatedUser.Email;
                 user.Role = updatedUser.Role;
-                user.Phone = updatedUser.Phone;
                 user.Password = updatedUser.Password;
-                user.Address = updatedUser.Address;
                 user.Enabled = updatedUser.Enabled;
 
                 user.Modified = DateTime.UtcNow;
