@@ -1,0 +1,68 @@
+﻿html {
+    scroll-behavior: smooth;
+}
+
+.card:hover {
+    box-shadow: 0 0 1em gray;
+    transform: scale(1.05);
+}
+.btn:hover {
+    box-shadow: 0 0 0.5em gray;
+    transform: scale(1.02);
+}
+.card {
+    transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+}
+.btn {
+    transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+}
+
+.nounderline{
+    text-decoration: none !important;
+}
+
+.fadein {
+    animation: fadeInAnimation ease 0.3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+@media only screen and (min-width: 767px) {
+    .center-margin {
+        margin-top: 20vh;
+    }
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .margin-mobile {
+        margin-top: 10px;
+    }
+}
+
+@media (min-width: 768px) {
+    .collapse.dont-collapse-sm {
+        display: block;
+        height: auto !important;
+        visibility: visible;
+    }
+}
+.pointer {
+    cursor: pointer;
+}
