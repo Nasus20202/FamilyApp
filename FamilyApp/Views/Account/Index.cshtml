@@ -1,4 +1,5 @@
 ﻿@using FamilyApp
+@model BaseViewModel
 @{
     Layout = "_Layout";
 }
@@ -23,7 +24,24 @@
         {
         <tr>
             <th scope="row">Family</th>
-            <td>@Model.User.FamilyId</td>
+            <td>
+            @using(var db = new Database())
+            {
+                Family family = db.Families.Where(f => f.FamilyId == Model.User.FamilyId).FirstOrDefault();
+                if (family == null)
+                {
+                    @:Error: No family found
+                }
+                else
+                {
+                    @family.Name @:(@family.Code)
+                }
+
+            }
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#warning" style="margin-left: 20px">
+                    Leave
+                </button>            
+            </td>
         </tr>
         }
     </tbody>
@@ -31,3 +49,24 @@
 <div class="d-grid gap-2 col-8 mx-auto">
     <a href="@Url.Action("edit", "account")" class="btn btn-outline-primary btn-lg btn-block">Edit your account</a>
 </div>
+
+@section modal
+{
+<div class="modal fade" id="warning" tabindex="-1" aria-labelledby="warninglabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="warninglabel">Warning</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure that you want to leave your family?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <a href="@Url.Action("leave", "home")" class="btn btn-danger">Yes, leave</a>
+      </div>
+    </div>
+  </div>
+</div>
+}

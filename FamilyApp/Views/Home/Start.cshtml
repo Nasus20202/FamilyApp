@@ -8,31 +8,63 @@
 @if (User.Identity.IsAuthenticated)
 {
 <div class="row">
-    <div class="col-sm" style="border-right: solid #A0A0A0 1px">
+    <div class="col-sm d-flex flex-column" style="border-right: solid #A0A0A0 1px">
         <h2 style="text-align:center; font-weight: lighter" class="text-secondary">Join your family</h2>
-        @if (Model.Message != "")
-        {
-            <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
-                <i class="bi-exclamation-triangle-fill"></i>
-                <div style="margin-left:10px">
-                    @Model.Message
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        }
-        <form action="/join" method="post">
-            <label for="code" class="form-label">Family code (10 digits)</label>
+        <form action="/join" method="post" style="margin-top: 10px">
+            <label for="code" class="form-label text-secondary">Enter family code (10 digits)</label>
             <input class="form-control" name="code" asp-for="code" pattern=".{10,10}" type="text" />
-            <div class="d-grid gap-2 col-8 mx-auto" style="margin-top: 20px">
+            <div class="d-grid gap-2 col mx-auto" style="margin-top: 15px">
                 <button type="submit" class="btn btn-primary">Join</button>
             </div>
         </form>
     </div>
-    <div class="col-sm">
+    <div class="col-sm d-flex flex-column">
         <h2 style="text-align: center; font-weight: lighter" class="text-secondary">Create a new one</h2>
+        <p class="text-secondary">Start here if your family is new to the App.</p>
+        <div class="d-grid gap-2 mt-auto" style="margin-top: 20px">
+            <a href="@Url.Action("create", "home")" class="btn btn-primary">Create</a>
+        </div>
     </div>
 </div>
 }
 else { 
-    @:Log in
+<div class="row">
+    <div class="col-sm-4" style="margin-top: 10px">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 style="text-align:center; font-weight: lighter">To-Do list for your family</h3>
+            </div>
+            <div class="card-body text-secondary">
+                Coming soon
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4" style="margin-top: 10px">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 style="text-align:center; font-weight: lighter">Shared shopping list</h3>
+            </div>
+            <div class="card-body text-secondary">
+                Coming soon
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4" style="margin-top: 10px">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 style="text-align:center; font-weight: lighter">Integrated chat</h3>
+            </div>
+            <div class="card-body text-secondary">
+                Coming soon
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-grid gap-2 col-10 mx-auto" style="margin-top: 20px">
+    <a href="@Url.Action("login", "account")" class="btn btn-primary">Sign in to continue</a>
+</div>
+<div class="d-grid gap-2 col-10 mx-auto" style="margin-top: 10px">
+    <a href="@Url.Action("register", "account")" class="btn btn-outline-primary">New user? Create an account now!</a>
+</div>
 }

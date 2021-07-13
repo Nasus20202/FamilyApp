@@ -1,0 +1,45 @@
+﻿@using FamilyApp
+@using Microsoft.AspNetCore.Http
+@model FamilyModel
+@{
+    Layout = "_Layout";
+}
+
+<br />
+<h2 style="text-align:center" class="display-4">Create your family</h2>
+<br />
+@if (Model.Message != "")
+{
+    <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+        <i class="bi-exclamation-triangle-fill"></i>
+        <div style="margin-left:10px">
+            @Model.Message
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (Model.Code != null && Model.Code != "")
+{
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+        <i class="bi-check-circle-fill" style="margin-right: 10px"></i>
+        <div>
+            You family code is <strong>@Model.Code</strong>. To invite someone copy this link: <a href="@Url.Action("join", "home")?code=@Model.Code" class="alert-link">https://@Context.Request.Host/join?code=@Model.Code</a>
+        </div>
+    </div>
+}
+<form action="/create" method="post">
+    <label for="code" class="form-label">Enter your family name <small class="text-secondary">(3-128 characters)</small></label>
+    <input class="form-control" name="Name" asp-for="@Model.Name" pattern=".{3,128}" type="text" value="@Model.Name" @if (Model.Code != null && Model.Code != "") {
+        @:disabled
+            }/>
+    <div class="d-grid gap-2 col-8 mx-auto" style="margin-top: 20px">
+        @if (Model.Code != null && Model.Code != "")
+        {
+            <a href="/" class=" btn btn-success">Visit your family!</a>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary">Create</button>
+        }
+    </div>
+</form>
