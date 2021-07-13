@@ -30,7 +30,7 @@
         <label for="User.Email" asp-for="@Model.User.Email">Email</label>
         <input type="email" class="form-control" asp-for="@Model.User.Email" name="User.Email" pattern=".{5,128}" value="@Model.User.Email">
     </div>
-    <div class="d-grid gap-2 col-8 mx-auto">
+    <div class="d-grid gap-2 col-8 mx-auto" style="margin-top: 10px">
         <button type="button" class="btn btn-outline-primary btn-sm" id="passwordShow" onclick="showPasswordChange()" style="margin-bottom:7px">Change password</button>
     </div>
     <div class="form-group" id="changePassword" style="display:none">

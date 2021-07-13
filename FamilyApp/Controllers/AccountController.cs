@@ -104,16 +104,17 @@ namespace FamilyApp
         }
 
         [HttpGet]
-        public IActionResult Login(AccountModel input)
+        public IActionResult Login(AccountModel input, [FromQuery] string ReturnUrl = "/")
         {
             if (input == null)
                 input = new AccountModel();
             input.Title = "Sign in";
+            ViewData["ReturnUrl"] = ReturnUrl;
             return View(input);
         }
         [HttpPost]
         [ActionName("Login")]
-        public async Task<IActionResult> TryLogin(AccountModel input, [FromQuery] string ReturnUrl)
+        public async Task<IActionResult> TryLogin(AccountModel input, string ReturnUrl)
         {
             input.Title = "Sign in";
             bool status = AreCredentialsValid(input.Login, input.Password);
@@ -158,16 +159,17 @@ namespace FamilyApp
         } 
 
         [HttpGet]
-        public IActionResult Register(AccountModel input)
+        public IActionResult Register(AccountModel input, [FromQuery] string ReturnUrl = "/")
         {
             if(User.Identity.IsAuthenticated)
                 return Redirect(Url.Action("index", "home"));
             var model = new AccountModel("Sing up");
+            ViewData["ReturnUrl"] = ReturnUrl;
             return View(model);
         }
         [HttpPost]
         [ActionName("Register")]
-        public async Task<IActionResult> TryRegister(AccountModel input)
+        public async Task<IActionResult> TryRegister(AccountModel input, string ReturnUrl)
         {
             if (IsEmailFree(input.User.Email))
             {
@@ -197,7 +199,9 @@ namespace FamilyApp
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Email, ClaimTypes.Role);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
-                    return Redirect(Url.Action("index", "home"));
+                    if (ReturnUrl == null)
+                        return Redirect(Url.Action("index", "home"));
+                    return Redirect(ReturnUrl);
                 }
             }
             else

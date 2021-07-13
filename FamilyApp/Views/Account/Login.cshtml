@@ -27,10 +27,11 @@
         <label class="form-check-label" for="rememberMe" asp-for="@Model.RememberMe">Remember me</label>
     </div>
     <br />
+    <input type="text" style="display: none" name="ReturnUrl" asp-for="ReturnUrl" value="@ViewData["ReturnUrl"]" />
     <div class="d-grid gap-2 col-8 mx-auto">
         <button type="submit" class="btn btn-primary btn-lg">Sign in</button>
     </div>
 </form>
 <div class="d-grid gap-2 col-8 mx-auto">
-    <a href="@Url.Action("register", "account")" class="btn btn-outline-primary btn-lg btn-block" style="margin-top: 7px">New user? Sign up!</a>
+    <a href="@Url.Action("register", "account")?ReturnUrl=@ViewData["ReturnUrl"]" class="btn btn-outline-primary btn-lg btn-block" style="margin-top: 7px">New user? Sign up!</a>
 </div>

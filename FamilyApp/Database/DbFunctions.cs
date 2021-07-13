@@ -7,6 +7,61 @@ namespace FamilyApp
 {
     public class DbFunctions
     { 
+        // Families
+
+        public static Family FindFamilyById(int id)
+        {
+            using (var db = new Database())
+            {
+                var family = (from f in db.Families
+                            where f.FamilyId == id
+                            select f).FirstOrDefault();
+                return family;
+            }
+        }
+
+        public static void AddFamily(Family family)
+        {
+            if (family == null)
+                return;
+            using (var db = new Database())
+            {
+                db.Families.Add(family);
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch
+                {
+                    return;
+                }
+            }
+        }
+        public static void UpdateFamily(Family updatedFamily)
+        {
+            using (var db = new Database())
+            {
+                var family = (from f in db.Families
+                              where f.FamilyId == updatedFamily.FamilyId
+                              select f).FirstOrDefault();
+                if (family == null)
+                    return;
+                family.Name = updatedFamily.Name;
+                family.Code = updatedFamily.Code;
+                family.Enabled = family.Enabled;
+
+                family.Modified = DateTime.UtcNow;
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
         //Users
 
         public static User FindUserById(int id)
@@ -60,6 +115,7 @@ namespace FamilyApp
                 user.Email = updatedUser.Email;
                 user.Role = updatedUser.Role;
                 user.Password = updatedUser.Password;
+                user.FamilyId = updatedUser.FamilyId;
                 user.Enabled = updatedUser.Enabled;
 
                 user.Modified = DateTime.UtcNow;

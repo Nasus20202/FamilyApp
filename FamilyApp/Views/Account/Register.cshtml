@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col">
             <label for="User.Name" asp-for="@Model.User.Name">Name</label>
-            <input type="text" name="User.Name" class="form-control" asp-for="@Model.User.Name"  pattern=".{3,64}" required>
+            <input type="text" name="User.Name" class="form-control" asp-for="@Model.User.Name" pattern=".{3,64}" required>
         </div>
         <div class="col">
             <label for="User.Surname" asp-for="@Model.User.Surname">Surname</label>
@@ -25,16 +25,17 @@
     Password (at least 8 characters)
     <div class="row">
         <div class="col">
-            <input type="password" name="Password" asp-for="@Model.Password" pattern=".{8,128}"  class="form-control" placeholder="Password" required>
+            <input type="password" name="Password" asp-for="@Model.Password" pattern=".{8,128}" class="form-control" placeholder="Password" required>
         </div>
         <div class="col">
             <input type="password" name="Password2" asp-for="@Model.Password2" pattern=".{8,128}" class="form-control" placeholder="Repeat password" required>
         </div>
     </div>
+    <input type="text" style="display: none" name="ReturnUrl" asp-for="ReturnUrl" value="@ViewData["ReturnUrl"]" />
     <div class="d-grid gap-2 col-8 mx-auto" style="margin-top: 20px">
         <button type="submit" class="btn btn-primary btn-lg btn-block">Sign up</button>
     </div>
 </form>
 <div class="d-grid gap-2 col-8 mx-auto">
-    <a href="@Url.Action("login", "account")" class="btn btn-outline-primary btn-lg btn-block" style="margin-top: 7px">You have an account? Sign in!</a>
+    <a href="@Url.Action("login", "account")?ReturnUrl=@ViewData["ReturnUrl"]" class="btn btn-outline-primary btn-lg btn-block" style="margin-top: 7px">You have an account? Sign in!</a>
 </div>

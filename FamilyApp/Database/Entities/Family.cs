@@ -27,6 +27,7 @@ namespace FamilyApp
         [Key]
         public int FamilyId { get; set; }
         public string Code { get; set; }
+        public string Name { get; set; }
 
         public List<User> Users { get; set; }
     }
