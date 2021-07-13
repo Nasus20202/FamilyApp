@@ -20,6 +20,10 @@ namespace FamilyApp
                 model.User.Surname = user.Surname;
                 model.User.Email = user.Email;
                 model.User.FamilyId = user.FamilyId;
+                if (user.FamilyId == null)
+                    return Redirect("/");
+                model.Family = DbFunctions.FindFamilyById((int) user.FamilyId);
+                model.ToDos = db.ToDos.Where(td => !td.Done).OrderBy(td => td.Deadline).ToList();
             }
             return View(model);
         }

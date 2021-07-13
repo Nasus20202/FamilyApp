@@ -11,7 +11,10 @@ namespace FamilyApp
         public static string ConnectionString = "";
         public DbSet<User> Users { get; set; }
 
+
         public DbSet<Family> Families { get; set; }
+
+        public DbSet<ToDo> ToDos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

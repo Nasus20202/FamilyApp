@@ -1,6 +1,59 @@
-﻿@using FamilyApp
+﻿@model FamilyModel
+@using FamilyApp
 @{
     Layout = "_Layout";
 }
+@section left{
+    <h3 style="text-align:center; font-weight: lighter">To-Do</h3>
+    <div class="overflow-auto">
+        <div class="list-group">
+            @foreach (ToDo todo in Model.ToDos)
+            {
+                string timeLeft = "", userName = "";
+                if (todo.Deadline != null)
+                {
+                    TimeSpan ts = (TimeSpan)(todo.Deadline - DateTime.Now);
+                    int days = ts.Days, hours = ts.Hours, minutes = ts.Minutes;
+                    if(days >= 1)
+                    {
+                        timeLeft = days.ToString() + " days";
+                    }
+                    else {
+                        timeLeft = hours.ToString() + "h and " + minutes.ToString() + " min";
+                    }
 
-Home family
+                }
+                if(todo.UserId != null)
+                {
+                    User user = DbFunctions.FindUserById((int) todo.UserId);
+                    userName = user.Name + " " + user.Surname;
+
+                }
+            <div class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@todo.Name</h5>
+                    @if (todo.Deadline != null) {
+                        <small class="text-end text-secondary">
+                            Deadline: @todo.Deadline <br />
+                            Time left: @timeLeft
+                        </small>
+                    }
+                </div>
+                <p class="mb-1">@todo.Action</p>
+                @if (todo.UserId != null) {
+                    <small>For @userName</small>
+                }
+            </div>
+            }
+        </div>
+    </div>
+}
+@section center{
+    <h3 style="text-align:center; font-weight: lighter">Shopping list</h3>
+}
+@section right{
+    <h3 style="text-align:center; font-weight: lighter">Chat</h3>
+}
+
+
+
