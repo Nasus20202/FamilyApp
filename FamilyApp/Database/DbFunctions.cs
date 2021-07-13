@@ -6,7 +6,68 @@ using System.Threading.Tasks;
 namespace FamilyApp
 {
     public class DbFunctions
-    { 
+    {
+        // ToDos
+
+        public static ToDo FindToDoById(int id)
+        {
+            using (var db = new Database())
+            {
+                var todo = (from f in db.ToDos
+                              where f.ToDoId == id
+                              select f).FirstOrDefault();
+                return todo;
+            }
+        }
+
+        public static void AddTodo(ToDo todo)
+        {
+            if (todo == null)
+                return;
+            using (var db = new Database())
+            {
+                db.ToDos.Add(todo);
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch
+                {
+                    return;
+                }
+            }
+        }
+        public static void UpdateToDo(ToDo updatedTodo)
+        {
+            using (var db = new Database())
+            {
+                var todo = (from f in db.ToDos
+                              where f.ToDoId == updatedTodo.ToDoId
+                              select f).FirstOrDefault();
+                if (todo == null)
+                    return;
+
+                todo.Name = updatedTodo.Name;
+                todo.Action = updatedTodo.Action;
+                todo.Done = updatedTodo.Done;
+                todo.Deadline = updatedTodo.Deadline;
+                todo.Importance = updatedTodo.Importance;
+                todo.UserId = updatedTodo.UserId;
+                todo.FamilyId = updatedTodo.FamilyId;
+
+                todo.Modified = DateTime.UtcNow;
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+
         // Families
 
         public static Family FindFamilyById(int id)

@@ -12,6 +12,8 @@ namespace FamilyApp
 
         public string Name { get; set; }
         public string Code { get; set; }
-        public List<int> Users { get; set; }
+        public Family Family { get; set; }
+
+        public List<ToDo> ToDos { get; set; }
     }
 }

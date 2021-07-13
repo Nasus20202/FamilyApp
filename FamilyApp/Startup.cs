@@ -75,6 +75,14 @@ namespace FamilyApp
             using(var db = new Database())
             {
                 db.Database.EnsureCreated();
+                /*ToDo todo = new ToDo();
+                todo.Action = "Wash the car";
+                todo.FamilyId = 1;
+                todo.UserId = 1;
+                todo.Importance = 12;
+                todo.Deadline = DateTime.Now.AddDays(3);
+                db.ToDos.Add(todo);
+                db.SaveChanges();*/
             }
 
             app.UseEndpoints(endpoints =>
