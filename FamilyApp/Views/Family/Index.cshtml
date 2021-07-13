@@ -4,47 +4,82 @@
     Layout = "_Layout";
 }
 @section left{
-    <h3 style="text-align:center; font-weight: lighter">To-Do</h3>
-    <div class="overflow-auto">
-        <div class="list-group">
-            @foreach (ToDo todo in Model.ToDos)
-            {
-                string timeLeft = "", userName = "";
-                if (todo.Deadline != null)
+    <div>
+        <script>
+            function markAsDone(id) {
+                $.post("/family/MarkToDoAsDone?id=" + id);
+                document.getElementById("todo-" + id).remove();
+                $('#doneModal').modal('hide');            }
+            function doneClick(id) {
+                document.getElementById("markAsDoneButton").setAttribute('onclick', 'markAsDone(' + id + ')');
+            }
+        </script>
+        <h3 style="text-align:center; font-weight: lighter">To-Do</h3>
+        <div class="d-grid gap-2">
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#newTaskModal" style="margin-bottom: 10px">Add a new task</button>
+        </div>
+        <div class="overflow-auto">
+            <div class="list-group">
+                @if (Model.ToDos.Count == 0)
                 {
-                    TimeSpan ts = (TimeSpan)(todo.Deadline - DateTime.Now);
-                    int days = ts.Days, hours = ts.Hours, minutes = ts.Minutes;
-                    if(days >= 1)
+                     <h3 class="text-secondary text-center" style="margin-top: 30vh" id="noTasks">No tasks to be done!</h3>
+                }
+                @foreach (ToDo todo in Model.ToDos)
+                {
+                    string timeLeft = "", userName = ""; bool expired = false;
+                    if (todo.Deadline != null)
                     {
-                        timeLeft = days.ToString() + " days";
+                        TimeSpan ts = (TimeSpan)(todo.Deadline - DateTime.Now);
+                        int days = Math.Abs(ts.Days), hours = Math.Abs(ts.Hours), minutes = Math.Abs(ts.Minutes);
+                        if (days >= 1)
+                        {
+                            timeLeft = days.ToString() + " day";
+                            if (days != 1)
+                                timeLeft += "s";
+                        }
+                        else
+                        {
+                            timeLeft = hours.ToString() + "h and " + minutes.ToString() + " min";
+                        }
+                        if (ts < new TimeSpan(0))
+                        {
+                            expired = true;
+                        }
                     }
-                    else {
-                        timeLeft = hours.ToString() + "h and " + minutes.ToString() + " min";
-                    }
+                    if (todo.UserId != null)
+                    {
+                        User user = DbFunctions.FindUserById((int)todo.UserId);
+                        userName = user.Name + " " + user.Surname;
 
-                }
-                if(todo.UserId != null)
-                {
-                    User user = DbFunctions.FindUserById((int) todo.UserId);
-                    userName = user.Name + " " + user.Surname;
-
-                }
-            <div class="list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">@todo.Name</h5>
-                    @if (todo.Deadline != null) {
-                        <small class="text-end text-secondary">
-                            Deadline: @todo.Deadline <br />
-                            Time left: @timeLeft
-                        </small>
                     }
-                </div>
-                <p class="mb-1">@todo.Action</p>
-                @if (todo.UserId != null) {
-                    <small>For @userName</small>
+                    <div class="list-group-item list-group-item-action flex-column align-items-start" id="todo-@todo.ToDoId">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@todo.Name</h5>
+                            @if (todo.Deadline != null)
+                            {
+                                <small class="text-end text-secondary">
+
+                                    Deadline: @(((DateTime)todo.Deadline).ToString("g")) <br />
+                                    @if (!expired)
+                                    {
+                                        @:Time left: @timeLeft
+                                    }
+                                    else
+                                    {
+                                        @:Expired @timeLeft ago
+                                    }
+                                </small>
+                            }
+                        </div>
+                        <p class="mb-1">@todo.Action</p>
+                        @if (todo.UserId != null)
+                        {
+                            <small class="text-secondary">For @userName</small>
+                        }
+                        <button type="button" class="btn btn-outline-success btn-sm float-end" data-bs-toggle="modal" data-bs-target="#doneModal" onclick="doneClick(@todo.ToDoId)">Done</button>
+                    </div>
                 }
             </div>
-            }
         </div>
     </div>
 }
@@ -53,6 +88,44 @@
 }
 @section right{
     <h3 style="text-align:center; font-weight: lighter">Chat</h3>
+}
+
+@section modal {
+    <div class="modal fade" id="doneModal" tabindex="-1" aria-labelledby="doneModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="doneModalLabel">Done</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to mark this as done?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="markAsDoneButton" class="btn btn-success" onclick="">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="newTaskModal" tabindex="-1" aria-labelledby="newTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newTaskModalLabel">New task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Add a new task
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="markAsDoneButton" class="btn btn-success" onclick="">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 
