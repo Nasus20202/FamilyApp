@@ -3,14 +3,16 @@ using System;
 using FamilyApp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FamilyApp.Migrations
 {
     [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20210714114016_prodcuts")]
+    partial class prodcuts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,10 @@ namespace FamilyApp.Migrations
                     b.Property<bool>("Enabled")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("FamilyId")
+                    b.Property<int>("FamiliyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FamilyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("Modified")
@@ -151,9 +156,7 @@ namespace FamilyApp.Migrations
                 {
                     b.HasOne("FamilyApp.Family", "Family")
                         .WithMany()
-                        .HasForeignKey("FamilyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FamilyId");
 
                     b.Navigation("Family");
                 });

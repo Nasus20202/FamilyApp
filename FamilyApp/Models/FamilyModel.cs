@@ -17,6 +17,9 @@ namespace FamilyApp
         public ToDo ToDo { get; set; }
         public DateTime Time { get; set; }
 
+        public Product Product { get; set; }
+
         public List<ToDo> ToDos { get; set; }
+        public List<Product> ShoppingList { get; set; }
     }
 }

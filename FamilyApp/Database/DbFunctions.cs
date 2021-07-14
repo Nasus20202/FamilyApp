@@ -7,8 +7,63 @@ namespace FamilyApp
 {
     public class DbFunctions
     {
-        // ToDos
+        // Products
+        public static Product FindProductDoById(int id)
+        {
+            using (var db = new Database())
+            {
+                var product = (from f in db.Products
+                            where f.ProductId == id
+                            select f).FirstOrDefault();
+                return product;
+            }
+        }
 
+        public static void AddProduct(Product product)
+        {
+            if (product == null)
+                return;
+            using (var db = new Database())
+            {
+                db.Products.Add(product);
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch
+                {
+                    return;
+                }
+            }
+        }
+        public static void UpdateProduct(Product updatedProduct)
+        {
+            using (var db = new Database())
+            {
+                var product = (from f in db.Products
+                            where f.ProductId == updatedProduct.ProductId
+                            select f).FirstOrDefault();
+                if (product == null)
+                    return;
+
+                product.Name = updatedProduct.Name;
+                product.Amount = updatedProduct.Amount;
+                product.FamilyId = updatedProduct.FamilyId;
+                product.Enabled = updatedProduct.Enabled;
+
+                product.Modified = DateTime.UtcNow;
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        // ToDos
         public static ToDo FindToDoById(int id)
         {
             using (var db = new Database())
