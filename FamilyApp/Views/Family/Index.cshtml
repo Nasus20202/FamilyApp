@@ -4,12 +4,14 @@
     Layout = "_Layout";
 }
 @section left{
-    <div>
+    <!-- To-Do -->
+    <div class="sticky-top">
         <script>
             function markAsDone(id) {
                 $.post("/family/MarkToDoAsDone?id=" + id);
                 document.getElementById("todo-" + id).remove();
-                $('#doneModal').modal('hide');            }
+                $('#doneModal').modal('hide');
+            }
             function doneClick(id) {
                 document.getElementById("markAsDoneButton").setAttribute('onclick', 'markAsDone(' + id + ')');
             }
@@ -18,18 +20,18 @@
         <div class="d-grid gap-2">
             <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#newTaskModal" style="margin-bottom: 10px">Add a new task <i class="bi-plus"></i></button>
         </div>
-        <div class="overflow-auto">
+        <div style="overflow: auto; margin-bottom: 40px">
             <div class="list-group">
                 @if (Model.ToDos.Count == 0)
                 {
-                     <h3 class="text-secondary text-center" style="margin-top: 30vh" id="noTasks">No tasks to be done!</h3>
+                    <h3 class="text-secondary text-center" style="margin-top: 30vh" id="noTasks">No tasks to be done!</h3>
                 }
                 @foreach (ToDo todo in Model.ToDos)
                 {
                     string timeLeft = "", userName = ""; bool expired = false;
                     if (todo.Deadline != null)
                     {
-                        TimeSpan ts = (TimeSpan)(todo.Deadline - DateTime.Now); 
+                        TimeSpan ts = (TimeSpan)(todo.Deadline - DateTime.Now);
                         int days = Math.Abs(ts.Days), hours = Math.Abs(ts.Hours), minutes = Math.Abs(ts.Minutes);
                         if (days >= 1)
                         {
@@ -53,22 +55,24 @@
 
                     }
                     <div class="list-group-item
-                         @if (expired) 
+                         @if (expired)
                          {
                              @:list-group-item-warning
                          }
                          list-group-item-action flex-column align-items-start" id="todo-@todo.ToDoId">
                         <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1 
-                                @if(todo.Importance >= 4) 
-                                { 
+                            <h5 class="mb-1
+                                @if(todo.Importance >= 4)
+                                {
                                     @:fw-bold
                                 }
-                                @if(todo.Importance >= 5) 
+                                @if(todo.Importance >= 5)
                                 {
-                                    @:text-danger 
+                                    @:text-danger
                                 }
-                            ">@todo.Name</h5>
+                            ">
+                                @todo.Name
+                            </h5>
                             @if (todo.Deadline != null)
                             {
                                 <small class="text-end text-secondary">
@@ -98,13 +102,52 @@
     </div>
 }
 @section center{
-    <h3 style="text-align:center; font-weight: lighter">Shopping list</h3>
+    <!-- Shopping list -->
+    <div class="sticky-top">
+        <script>
+            function removeFromList(id)
+            {
+                $.post("/family/RemoveProduct?id=" + id);
+                document.getElementById("product-" + id).style.display = 'none';
+            }
+        </script>
+        <h3 style="text-align:center; font-weight: lighter">Shopping list</h3>
+        <div class="d-grid gap-2">
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#newProductModal" style="margin-bottom: 10px">Add new product <i class="bi-plus"></i></button>
+        </div>
+        <div style="overflow: auto;">
+            <div class="list-group">
+                @if (Model.ShoppingList.Count == 0)
+                {
+                    <h3 class="text-secondary text-center" style="margin-top: 30vh" id="noProducts">Shopping list is empty</h3>
+                }
+                @foreach (Product product in Model.ShoppingList)
+                {
+
+                <div id="product-@product.ProductId">
+                    <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-bs-toggle="dropdown">
+                        @product.Name
+                        @if (product.Amount != null && product.Amount.Length >= 1)
+                        {
+                            <span class="badge bg-primary rounded-pill">@product.Amount</span>
+                        }
+                    </div>
+                    <ul class="dropdown-menu">
+                        <li><span class="dropdown-item" onclick="removeFromList(@product.ProductId)">Remove</span></li>
+                    </ul>
+                </div>
+
+                }
+            </div>
+        </div>
+    </div>
 }
 @section right{
     <h3 style="text-align:center; font-weight: lighter">Chat</h3>
 }
 
 @section modal {
+    <!-- Task done modal -->
     <div class="modal fade" id="doneModal" tabindex="-1" aria-labelledby="doneModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -123,6 +166,7 @@
         </div>
     </div>
 
+    <!-- Add a new task modal -->
     <div class="modal fade" id="newTaskModal" tabindex="-1" aria-labelledby="newTaskModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -154,12 +198,12 @@
                         <div class="mb-3">
                             <select class="form-select  form-select-sm" name="todo.userid" asp-for="@Model.ToDo.UserId" aria-label="Choose user">
                                 <option selected>For whom is this task? (optional)</option>
-                                @using(var db = new Database())
+                                @using (var db = new Database())
                                 {
                                     int id = Model.Family.FamilyId;
                                     List<User> users = db.Users.Where(u => u.FamilyId == id).OrderBy(u => u.Name).ThenBy(u => u.Surname).ToList(); ;
-                                    foreach(User user in users) 
-                                    { 
+                                    foreach (User user in users)
+                                    {
                                         @:<option value="@user.UserId">@user.Name @user.Surname</option>
                                     }
                                 }
@@ -179,7 +223,35 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" id="markAsDoneButton" class="btn btn-success" onclick="">Add</button>
+                        <button type="submit" id="addTaskButton" class="btn btn-success">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add a new product modal -->
+    <div class="modal fade" id="newProductModal" tabindex="-1" aria-labelledby="newProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newProductModalLabel">Add to shopping list <i class="bi-plus"></i></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="/family/AddNewProduct">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="Product.Name" class="form-label">Product name</label>
+                            <input type="text" class="form-control" id="name" name="Product.Name" asp-for="@Model.Product.Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Product.Amount" class="form-label">Amount</label>
+                            <input type="text" class="form-control" id="amount" name="Product.Amount" asp-for="@Model.Product.Amount">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" id="addProductButton" class="btn btn-success">Add</button>
                     </div>
                 </form>
             </div>
