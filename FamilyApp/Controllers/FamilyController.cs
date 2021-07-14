@@ -62,6 +62,10 @@ namespace FamilyApp
                 dateTime = dateTime.AddMinutes(input.Time.Minute);
                 toDo.Deadline = dateTime;
             }
+            else if(input.Time.Year != 1)
+            {
+                toDo.Deadline = input.Time;
+            }
             if (toDo.Name != null && toDo.Name.Length > 128)
                 toDo.Name.Substring(0, 128);
             if (toDo.Action != null && toDo.Action.Length > 2048)
