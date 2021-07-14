@@ -16,7 +16,7 @@
         </script>
         <h3 style="text-align:center; font-weight: lighter">To-Do</h3>
         <div class="d-grid gap-2">
-            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#newTaskModal" style="margin-bottom: 10px">Add a new task</button>
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#newTaskModal" style="margin-bottom: 10px">Add a new task <i class="bi-plus"></i></button>
         </div>
         <div class="overflow-auto">
             <div class="list-group">
@@ -29,7 +29,7 @@
                     string timeLeft = "", userName = ""; bool expired = false;
                     if (todo.Deadline != null)
                     {
-                        TimeSpan ts = (TimeSpan)(todo.Deadline - DateTime.Now);
+                        TimeSpan ts = (TimeSpan)(todo.Deadline - DateTime.Now); 
                         int days = Math.Abs(ts.Days), hours = Math.Abs(ts.Hours), minutes = Math.Abs(ts.Minutes);
                         if (days >= 1)
                         {
@@ -52,9 +52,23 @@
                         userName = user.Name + " " + user.Surname;
 
                     }
-                    <div class="list-group-item list-group-item-action flex-column align-items-start" id="todo-@todo.ToDoId">
+                    <div class="list-group-item
+                         @if (expired) 
+                         {
+                             @:list-group-item-warning
+                         }
+                         list-group-item-action flex-column align-items-start" id="todo-@todo.ToDoId">
                         <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">@todo.Name</h5>
+                            <h5 class="mb-1 
+                                @if(todo.Importance >= 4) 
+                                { 
+                                    @:fw-bold
+                                }
+                                @if(todo.Importance >= 5) 
+                                {
+                                    @:text-danger 
+                                }
+                            ">@todo.Name</h5>
                             @if (todo.Deadline != null)
                             {
                                 <small class="text-end text-secondary">
@@ -95,7 +109,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="doneModalLabel">Done</h5>
+                    <h5 class="modal-title" id="doneModalLabel">Done <i class="bi-check"></i></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -113,16 +127,61 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="newTaskModalLabel">New task</h5>
+                    <h5 class="modal-title" id="newTaskModalLabel">New task <i class="bi-plus"></i></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    Add a new task
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="markAsDoneButton" class="btn btn-success" onclick="">Add</button>
-                </div>
+                <form method="post" action="/family/AddNewTask">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="todo.name" class="form-label">Task name</label>
+                            <input type="text" class="form-control" id="name" name="todo.name" asp-for="@Model.ToDo.Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="todo.action" class="form-label">Task description</label>
+                            <textarea class="form-control" id="action" name="todo.action" asp-for="@Model.ToDo.Action" rows="2"></textarea>
+                        </div>
+                        <div id="optinalText" class="form-text">Optional information:</div>
+                        <div class="mb-3 row">
+                            <div class="col">
+                                <label for="time" class="form-label">Time</label>
+                                <input type="time" class="form-control" id="time" name="time" asp-for="@Model.Time" />
+                            </div>
+                            <div class="col">
+                                <label for="todo.deadline" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="deadline" name="todo.deadline" asp-for="@Model.ToDo.Deadline" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <select class="form-select  form-select-sm" name="todo.userid" asp-for="@Model.ToDo.UserId" aria-label="Choose user">
+                                <option selected>For whom is this task? (optional)</option>
+                                @using(var db = new Database())
+                                {
+                                    int id = Model.Family.FamilyId;
+                                    List<User> users = db.Users.Where(u => u.FamilyId == id).OrderBy(u => u.Name).ThenBy(u => u.Surname).ToList(); ;
+                                    foreach(User user in users) 
+                                    { 
+                                        @:<option value="@user.UserId">@user.Name @user.Surname</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            Importance
+                            <div class="row small text-center">
+                                <div class="col">Very low</div>
+                                <div class="col">Low</div>
+                                <div class="col">Moderate</div>
+                                <div class="col">High</div>
+                                <div class="col">Critical</div>
+                            </div>
+                            <input type="range" class="form-range" min="1" max="5" name="todo.importance" asp-for="@Model.ToDo.Importance" value="3">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" id="markAsDoneButton" class="btn btn-success" onclick="">Add</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
