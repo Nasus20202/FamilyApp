@@ -14,6 +14,9 @@ namespace FamilyApp
         public string Code { get; set; }
         public Family Family { get; set; }
 
+        public ToDo ToDo { get; set; }
+        public DateTime Time { get; set; }
+
         public List<ToDo> ToDos { get; set; }
     }
 }
