@@ -13,6 +13,9 @@ connection.on("ReceiveMessage", function (user, message)
 
 connection.start().then(function () {
     document.getElementById("sendButton").disabled = false;
+    connection.invoke("JoinGroup").catch(function (err) {
+        return console.error(err.toString());
+    })
 }).catch(function (err) {
     return console.error(err.toString());
 })
