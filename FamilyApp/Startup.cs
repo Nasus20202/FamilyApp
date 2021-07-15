@@ -29,6 +29,7 @@ namespace FamilyApp
         {
             services.AddMvc();
             services.AddRazorPages();
+            services.AddSignalR();
             services.AddControllersWithViews();
             services.AddAuthentication(options =>
             {
@@ -88,6 +89,7 @@ namespace FamilyApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chathub");
                 endpoints.MapControllerRoute(
                 "default", "{controller=Home}/{action=Index}/{id?}");
             });
