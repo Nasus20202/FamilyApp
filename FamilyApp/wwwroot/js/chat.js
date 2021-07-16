@@ -1,5 +1,18 @@
 ﻿"use strict";
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+function checkIfDarkmodeEnabled() {
+    var cookie = getCookie("darkmodeEnaled");
+    if (cookie == 'true')
+        return true;
+    return false;
+}
+
 var connection = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
 
 document.getElementById("sendButton").disabled = true;
@@ -11,7 +24,8 @@ connection.on("ReceiveMessage", function (user, message, time)
 {
     var div = document.createElement("div");
     document.getElementById("messagesList").appendChild(div);
-    div.innerHTML = `<div class="row"><div class="alert alert-info col-8 fadein-long" style="padding: 7px">
+    var darkmode = checkIfDarkmodeEnabled() ? 'dark' : '';
+    div.innerHTML = `<div class="row"><div class="alert alert-info col-8 fadein-long ${darkmode}" style="padding: 7px">
 <p class="text-secondary" style="font-size: 11px; margin: 0px">${user}</p>
 <p class="text-secondary float-end" style="font-size: 10px; margin: 0px">${time.toString()}</p >
 ${message}
@@ -48,9 +62,10 @@ function sendMessage() {
     });
     var div = document.createElement("div");
     document.getElementById("messagesList").appendChild(div);
+    var darkmode = checkIfDarkmodeEnabled() ? 'dark' : '';
     if (document.getElementById("messageInput").value != "") {
         div.innerHTML = `<div class="row"><div class="col-4"></div>
-<div class="alert alert-primary fadein-long col-8" style="padding: 7px">
+<div class="alert alert-primary fadein-long col-8 ${darkmode}" style="padding: 7px">
 <p class="text-secondary" style="font-size: 11px; margin: 0px">You</p>
 <p class="text-secondary float-end" style="font-size: 10px; margin: 0px">${new Date().toLocaleString().replace(/(.*)\D\d+/, '$1')}</p >
 ${message}
