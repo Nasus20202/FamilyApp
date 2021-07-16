@@ -26,6 +26,17 @@
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
+.fadein-long {
+    animation: fadeInAnimation ease 0.7s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.dark {
+    background-color: #222 !important;
+    color: #e6e6e6 !important;
+    border-color: #3a3b3c !important;
+}
 
 hr {
     margin-top: 1rem;

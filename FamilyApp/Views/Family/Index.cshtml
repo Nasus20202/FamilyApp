@@ -62,11 +62,11 @@
                          list-group-item-action flex-column align-items-start" id="todo-@todo.ToDoId">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1
-                                @if(todo.Importance >= 4)
+                                @if (todo.Importance >= 4)
                                 {
                                     @:fw-bold
                                 }
-                                @if(todo.Importance >= 5)
+                                @if (todo.Importance >= 5)
                                 {
                                     @:text-danger
                                 }
@@ -143,7 +143,62 @@
     </div>
 }
 @section right{
-    <h3 style="text-align:center; font-weight: lighter">Chat</h3>
+    <!-- Chat -->
+    <div>
+        <div>
+            <h3 style="text-align:center; font-weight: lighter">Chat</h3>
+        </div>
+        <div class="row" style="overflow: auto; margin-right: 7px; margin-left: 3px; height: 76vh">
+            <div class="col-12">
+                <div id="messagesList">
+                    @if (Model.Messages.Count == (int)ViewData["oldMessages"])
+                    {
+                        <div class="d-grid gap-2 col-8 mx-auto" style="margin-bottom: 10px">
+                            <a href="?oldMessages=@((int)ViewData["oldMessages"] + 10)" class="btn btn-outline-primary">Load older messages</a>
+                        </div>
+                    }
+
+                    @foreach (Message message in Model.Messages)
+                    {
+                        User user = DbFunctions.FindUserById(message.UserId);
+                        <div class="row">
+                            @if (user.Email == Model.User.Email)
+                            {
+                                <div class="col-4"></div>
+                                <div class="alert alert-primary col-8" style="padding: 7px">
+                                    <p class="text-secondary" style="font-size: 11px; margin: 0px">You</p>
+                                    <p class="text-secondary float-end" style="font-size: 10px; margin: 0px">@message.Time.ToString("g")</p>
+                                    @message.Content
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info col-8" style="padding: 7px">
+                                    <p class="text-secondary" style="font-size: 11px; margin: 0px">@user.Name @user.Surname</p>
+                                    <p class="text-secondary float-end" style="font-size: 10px; margin: 0px">@message.Time.ToString("g")</p>
+                                    @message.Content
+                                </div>
+                            }
+                        </div>
+                    }
+                    <div id="end"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr />
+            </div>
+        </div>
+        <div class="row"  style="margin-bottom: 30px">
+            <div class="col-9"><input type="text" class="form-control form-control-sm" id="messageInput" /></div>
+            <div class="col-2">
+                <input type="button" class="btn btn-outline-primary btn-sm" id="sendButton" value="Send" />
+            </div>
+        </div>
+        <script src="~/js/signalr/dist/browser/signalr.js"></script>
+        <script src="~/js/chat.js"></script>
+    </div>
 }
 
 @section modal {

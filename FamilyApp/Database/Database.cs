@@ -17,6 +17,8 @@ namespace FamilyApp
 
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<Message> Messages { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var serverVerison = new MySqlServerVersion(new Version(8, 0, 25));

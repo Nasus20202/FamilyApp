@@ -18,14 +18,14 @@
     <script src="~/js/javascript.js"></script>
 </head>
 <body onload="onStart()">
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
+        <section class="container-fluid">
             <a class="navbar-brand" href="/">Family</a>
+            <span id="change">Mode</span>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <section class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 </ul>
                 <ul class="navbar-nav d-flex">
@@ -49,10 +49,10 @@
                         </ul>
                     </li>
                 </ul>
-            </div>
-        </div>
+            </section>
+        </section>
     </nav>
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-bottom: 25px">
         <div class="row">
             <div class="col-md-2 order-md-1">
             </div>
@@ -78,6 +78,24 @@
             <button type="button" class="btn btn-sm btn-outline-success" onclick="hideCookies()" style="margin-left: 10px">OK</button>
         </div>
     </div>
+
+    <script>
+        function setModeEmotes() {
+            if ($("body").hasClass("dark")) {
+                $("#change").html('<i class="bi-sun-fill"></i>');
+            }
+            else {
+                $("#change").html('<i class="bi-moon-stars-fill"></i');
+            }
+        }
+
+        $("#change").on("click", function () {
+            toggleDarkMode();
+            setModeEmotes();
+        });
+
+        setModeEmotes();
+    </script>
 </body>
 @RenderSection("modal", false)
 </html>
