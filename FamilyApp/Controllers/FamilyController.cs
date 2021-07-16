@@ -10,8 +10,12 @@ namespace FamilyApp
     [Authorize]
     public class FamilyController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(int oldMessages = 30)
         {
+            if (oldMessages < 0)
+                oldMessages = 0;
+            if (oldMessages > 1000)
+                oldMessages = 1000;
             FamilyModel model = new FamilyModel("Home");
             using (var db = new Database())
             {
@@ -25,6 +29,7 @@ namespace FamilyApp
                 model.Family = DbFunctions.FindFamilyById((int)user.FamilyId);
                 model.ToDos = db.ToDos.Where(td => td.FamilyId == model.User.FamilyId && !td.Done).OrderByDescending(td => td.Importance).ThenBy(td => td.Deadline).ToList();
                 model.ShoppingList = db.Products.Where(p => p.FamilyId == model.User.FamilyId && p.Enabled).OrderBy(p => p.Name).ThenByDescending(p => p.Amount).ToList();
+                model.Messages = db.Messages.Where(m => m.FamilyId == model.User.FamilyId).OrderBy(m => m.Time).Take(oldMessages).ToList();
                 model.ToDo = new ToDo();
                 model.Product = new Product();
             }

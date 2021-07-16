@@ -26,6 +26,11 @@
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
+.fadein-long {
+    animation: fadeInAnimation ease 0.7s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
 
 hr {
     margin-top: 1rem;

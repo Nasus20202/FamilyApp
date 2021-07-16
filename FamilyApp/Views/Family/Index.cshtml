@@ -145,23 +145,48 @@
 @section right{
     <!-- Chat -->
     <div>
-        <div class="container sticky-top" style="background-color: white">
+        <div>
             <h3 style="text-align:center; font-weight: lighter">Chat</h3>
-            <div class="row">
-                <div class="col-10"><input type="text" class="form-control form-control-sm" id="messageInput" /></div>
-                <div class="col-2">
-                    <input type="button" class="btn btn-outline-primary btn-sm" id="sendButton" value="Send" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <hr />
+        </div>
+        <div class="row" style="overflow: auto; margin-right: 7px; margin-left: 3px; height: 300px">
+            <div class="col-12">
+                <div id="messagesList">
+                    @foreach (Message message in Model.Messages)
+                    {
+                        User user = DbFunctions.FindUserById(message.UserId);
+                        <div class="row">
+                            @if (user.Email == Model.User.Email)
+                            {
+                                <div class="col-4"></div>
+                                <div class="alert alert-primary col-8" style="padding: 7px">
+                                    <p class="text-secondary" style="font-size: 11px; margin: 0px">You</p>
+                                    <p class="text-secondary float-end" style="font-size: 10px; margin: 0px">@message.Time.ToString("g")</p>
+                                    @message.Content
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info col-8" style="padding: 7px">
+                                    <p class="text-secondary" style="font-size: 11px; margin: 0px">@user.Name @user.Surname</p>
+                                    <p class="text-secondary float-end" style="font-size: 10px; margin: 0px">@message.Time.ToString("g")</p>
+                                    @message.Content
+                                </div>
+                            }
+                        </div>
+                    }
+                    <div id="end"></div>
                 </div>
             </div>
         </div>
-        <div class="row" style="overflow: auto;">
-            <div class="col-6">
-                <ul id="messagesList"></ul>
+        <div class="row">
+            <div class="col-12">
+                <hr />
+            </div>
+        </div>
+        <div class="row"  style="margin-bottom: 30px">
+            <div class="col-9"><input type="text" class="form-control form-control-sm" id="messageInput" /></div>
+            <div class="col-2">
+                <input type="button" class="btn btn-outline-primary btn-sm" id="sendButton" value="Send" />
             </div>
         </div>
         <script src="~/js/signalr/dist/browser/signalr.js"></script>

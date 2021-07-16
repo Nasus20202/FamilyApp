@@ -41,7 +41,17 @@ namespace FamilyApp
             {
                 await Clients.Caller.SendAsync("ReceiveMessage", "Error", "You are not associated with any family"); return;
             }
-            await Clients.Group(user.FamilyId.ToString()).SendAsync("ReceiveMessage", user.Name + " " + user.Surname, message);
+            if (message == null || message.Length == 0)
+                return;
+            if (message.Length > 4096)
+                message = message.Substring(0, 4096);
+            Message messageDb = new Message();
+            messageDb.Content = message;
+            messageDb.UserId = user.UserId;
+            messageDb.FamilyId = (int) user.FamilyId;
+            DbFunctions.AddMessage(messageDb);
+
+            await Clients.OthersInGroup(user.FamilyId.ToString()).SendAsync("ReceiveMessage", user.Name + " " + user.Surname, message, DateTime.Now.ToString("g"));
         }
     }
 }

@@ -21,5 +21,6 @@ namespace FamilyApp
 
         public List<ToDo> ToDos { get; set; }
         public List<Product> ShoppingList { get; set; }
+        public List<Message> Messages { get; set; }
     }
 }

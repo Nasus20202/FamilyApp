@@ -7,6 +7,38 @@ namespace FamilyApp
 {
     public class DbFunctions
     {
+
+        // Message
+
+        public static Message FindMessageById(int id)
+        {
+            using (var db = new Database())
+            {
+                var message = (from f in db.Messages
+                               where f.MessageId == id
+                               select f).FirstOrDefault();
+                return message;
+            }
+        }
+
+        public static void AddMessage(Message message)
+        {
+            if (message == null)
+                return;
+            using (var db = new Database())
+            {
+                db.Messages.Add(message);
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch
+                {
+                    return;
+                }
+            }
+        }
+
         // Products
         public static Product FindProductDoById(int id)
         {
