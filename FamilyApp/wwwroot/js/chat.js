@@ -7,7 +7,6 @@ document.getElementById("sendButton").disabled = true;
 if (document.location.search === "") {
     document.getElementById("messagesList").scrollIntoView({ block: "end", inline: "nearest" });
 }
-
 connection.on("ReceiveMessage", function (user, message, time)
 {
     var div = document.createElement("div");
@@ -32,6 +31,17 @@ connection.start().then(function () {
 })
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
+    sendMessage();
+    event.preventDefault();
+});
+
+document.addEventListener('keyup', (e) => {
+    if (e.code === 'Enter')
+        sendMessage();
+});
+
+
+function sendMessage() {
     var message = document.getElementById("messageInput").value;
     connection.invoke("SendMessage", message).catch(function (err) {
         return console.error(err.toString());
@@ -48,6 +58,4 @@ ${message}
     }
     document.getElementById("messageInput").value = "";
     document.getElementById("messagesList").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
-
-    event.preventDefault();
-});
+}

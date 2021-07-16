@@ -29,10 +29,11 @@ namespace FamilyApp
                 model.Family = DbFunctions.FindFamilyById((int)user.FamilyId);
                 model.ToDos = db.ToDos.Where(td => td.FamilyId == model.User.FamilyId && !td.Done).OrderByDescending(td => td.Importance).ThenBy(td => td.Deadline).ToList();
                 model.ShoppingList = db.Products.Where(p => p.FamilyId == model.User.FamilyId && p.Enabled).OrderBy(p => p.Name).ThenByDescending(p => p.Amount).ToList();
-                model.Messages = db.Messages.Where(m => m.FamilyId == model.User.FamilyId).OrderBy(m => m.Time).Take(oldMessages).ToList();
+                model.Messages = db.Messages.Where(m => m.FamilyId == model.User.FamilyId).OrderByDescending(m => m.Time).Take(oldMessages).OrderBy(m => m.Time).ToList();
                 model.ToDo = new ToDo();
                 model.Product = new Product();
             }
+            ViewData["oldMessages"] = oldMessages;
             return View(model);
         }
 

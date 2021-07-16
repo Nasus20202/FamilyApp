@@ -32,6 +32,12 @@
     animation-fill-mode: forwards;
 }
 
+.dark {
+    background-color: #222 !important;
+    color: #e6e6e6 !important;
+    border-color: #3a3b3c !important;
+}
+
 hr {
     margin-top: 1rem;
     margin-bottom: 1rem;

@@ -62,11 +62,11 @@
                          list-group-item-action flex-column align-items-start" id="todo-@todo.ToDoId">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1
-                                @if(todo.Importance >= 4)
+                                @if (todo.Importance >= 4)
                                 {
                                     @:fw-bold
                                 }
-                                @if(todo.Importance >= 5)
+                                @if (todo.Importance >= 5)
                                 {
                                     @:text-danger
                                 }
@@ -151,6 +151,13 @@
         <div class="row" style="overflow: auto; margin-right: 7px; margin-left: 3px; height: 300px">
             <div class="col-12">
                 <div id="messagesList">
+                    @if (Model.Messages.Count == (int)ViewData["oldMessages"])
+                    {
+                        <div class="d-grid gap-2 col-8 mx-auto" style="margin-bottom: 10px">
+                            <a href="?oldMessages=@((int)ViewData["oldMessages"] + 10)" class="btn btn-outline-primary">Load older messages</a>
+                        </div>
+                    }
+
                     @foreach (Message message in Model.Messages)
                     {
                         User user = DbFunctions.FindUserById(message.UserId);
