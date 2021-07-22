@@ -12,9 +12,12 @@
 </script>
 <br />
 <h2 style="text-align:center">Edit your account</h2>
+@if (Model.Message != null && Model.Message != "")
+{
 <div class="alert alert-success" role="alert">
     <span class="text-success">@Model.Message</span>
 </div>
+}
     <form controller="Account" action="Edit" method="post">
         <div class="row">
             <div class="col">
