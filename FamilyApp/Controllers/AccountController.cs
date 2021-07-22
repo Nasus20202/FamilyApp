@@ -93,11 +93,11 @@ namespace FamilyApp
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
                 input.Title = "Edytuj konto";
                 if(changedPass && changedEmail)
-                    input.Message = "Pomyślnie zmieniono adres email i hasło";
+                    input.Message = "Your email and password has been changed";
                 else if (changedEmail)
-                    input.Message = "Pomyślnie zmieniono adres email";
+                    input.Message = "Your email has been changed";
                 else
-                    input.Message = "Pomyślnie zmieniono hasło";
+                    input.Message = "Your password has been changed";
                 return View(input);
             }
             return Redirect(Url.Action("index", "account"));
@@ -163,7 +163,7 @@ namespace FamilyApp
         {
             if(User.Identity.IsAuthenticated)
                 return Redirect(Url.Action("index", "home"));
-            var model = new AccountModel("Sing up");
+            var model = new AccountModel("Sign up");
             ViewData["ReturnUrl"] = ReturnUrl;
             return View(model);
         }
@@ -182,7 +182,7 @@ namespace FamilyApp
                     if(input.User.Email == null || !input.User.Email.Contains('@') || input.User.Email.Length > 128 || input.User.Name == null || input.User.Name.Length > 64 || input.User.Surname == null || input.User.Surname.Length > 64 || input.Password == null || input.Password.Length > 128)
                     {
                         input.Message = "Wrong input";
-                        input.Title = "Sing up";
+                        input.Title = "Sign up";
                         return View(input);
                     }
                     var user = new User();
@@ -208,7 +208,7 @@ namespace FamilyApp
             {
                 input.Message = "Email " + input.User.Email + " is already taken";
             }
-            input.Title = "Zarejestruj się";
+            input.Title = "Sign up";
             return View(input);
         }
 

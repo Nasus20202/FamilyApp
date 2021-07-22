@@ -12,45 +12,45 @@
 </script>
 <br />
 <h2 style="text-align:center">Edit your account</h2>
-<br />
-<span class="text-success">@Model.Message</span>
-<br />
-<form controller="Account" action="Edit" method="post">
-    <div class="row">
-        <div class="col">
-            <label for="User.Name" asp-for="@Model.User.Name">Name</label>
-            <input type="text" name="User.Name" class="form-control" asp-for="@Model.User.Name" pattern=".{3,64}" value="@Model.User.Name">
-        </div>
-        <div class="col">
-            <label for="User.Surname" asp-for="@Model.User.Surname">Surname</label>
-            <input type="text" name="User.Surname" asp-for="@Model.User.Surname" pattern=".{3,64}" class="form-control" value="@Model.User.Surname">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="User.Email" asp-for="@Model.User.Email">Email</label>
-        <input type="email" class="form-control" asp-for="@Model.User.Email" name="User.Email" pattern=".{5,128}" value="@Model.User.Email">
-    </div>
-    <div class="d-grid gap-2 col-8 mx-auto" style="margin-top: 10px">
-        <button type="button" class="btn btn-outline-primary btn-sm" id="passwordShow" onclick="showPasswordChange()" style="margin-bottom:7px">Change password</button>
-    </div>
-    <div class="form-group" id="changePassword" style="display:none">
-        New password (at least 8 characters)
-        <div class="form-group">
-            <input type="password" name="Password" asp-for="@Model.Password" pattern=".{8,128}" class="form-control" placeholder="New password">
-        </div>
-        Repeat password
-        <div class="form-group">
-            <input type="password" name="Password2" asp-for="@Model.Password2" pattern=".{8,128}" class="form-control" placeholder="Repeat password">
-        </div>
-        Old password
-        <div class="form-group">
-            <input type="password" name="OldPassword" asp-for="@Model.OldPassword" pattern=".{8,128}" class="form-control" placeholder="Old password">
-        </div>
-    </div>
-    <div class="d-grid gap-2 col-8 mx-auto">
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Update your account</button>
-    </div>
-</form>
-<div class="d-grid gap-2 col-8 mx-auto">
-    <a href="@Url.Action("index", "account")" class="btn btn-outline-primary btn-lg btn-block" style="margin-top: 7px">Go back</a>
+<div class="alert alert-success" role="alert">
+    <span class="text-success">@Model.Message</span>
 </div>
+    <form controller="Account" action="Edit" method="post">
+        <div class="row">
+            <div class="col">
+                <label for="User.Name" asp-for="@Model.User.Name">Name</label>
+                <input type="text" name="User.Name" class="form-control" asp-for="@Model.User.Name" pattern=".{3,64}" value="@Model.User.Name">
+            </div>
+            <div class="col">
+                <label for="User.Surname" asp-for="@Model.User.Surname">Surname</label>
+                <input type="text" name="User.Surname" asp-for="@Model.User.Surname" pattern=".{3,64}" class="form-control" value="@Model.User.Surname">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="User.Email" asp-for="@Model.User.Email">Email</label>
+            <input type="email" class="form-control" asp-for="@Model.User.Email" name="User.Email" pattern=".{5,128}" value="@Model.User.Email">
+        </div>
+        <div class="d-grid gap-2 col-8 mx-auto" style="margin-top: 10px">
+            <button type="button" class="btn btn-outline-primary btn-sm" id="passwordShow" onclick="showPasswordChange()" style="margin-bottom:7px">Change password</button>
+        </div>
+        <div class="form-group" id="changePassword" style="display:none">
+            New password (at least 8 characters)
+            <div class="form-group">
+                <input type="password" name="Password" asp-for="@Model.Password" pattern=".{8,128}" class="form-control" placeholder="New password">
+            </div>
+            Repeat password
+            <div class="form-group">
+                <input type="password" name="Password2" asp-for="@Model.Password2" pattern=".{8,128}" class="form-control" placeholder="Repeat password">
+            </div>
+            Old password
+            <div class="form-group">
+                <input type="password" name="OldPassword" asp-for="@Model.OldPassword" pattern=".{8,128}" class="form-control" placeholder="Old password">
+            </div>
+        </div>
+        <div class="d-grid gap-2 col-8 mx-auto">
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Update your account</button>
+        </div>
+    </form>
+    <div class="d-grid gap-2 col-8 mx-auto">
+        <a href="@Url.Action("index", "account")" class="btn btn-outline-primary btn-lg btn-block" style="margin-top: 7px">Go back</a>
+    </div>
