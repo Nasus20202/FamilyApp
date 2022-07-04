@@ -72,6 +72,8 @@ namespace FamilyApp
             app.UseSession();
 
             app.UseStatusCodePagesWithRedirects("/Error/{0}");
+            var db = new Database();
+            db.Database.EnsureCreated();
 
             app.UseEndpoints(endpoints =>
             {
