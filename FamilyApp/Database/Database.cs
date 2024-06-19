@@ -18,9 +18,18 @@ namespace FamilyApp
 
         public DbSet<Message> Messages { get; set; }
 
+        public string DbPath { get; set; }
+
+        public Database()
+        {
+            var folder = Environment.SpecialFolder.LocalApplicationData;
+            var path = Environment.GetFolderPath(folder);
+            DbPath = System.IO.Path.Join(path, "family.db");
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=family.db");
+            optionsBuilder.UseSqlite($"Data Source={DbPath}");
         }
     }
 }
