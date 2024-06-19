@@ -16,7 +16,6 @@ namespace FamilyApp
 {
     public class Startup
     {
-        private string _developmentConnectionString = null, _productionConnectionString = null;
 
         public Startup(IConfiguration configuration)
         {
@@ -52,13 +51,9 @@ namespace FamilyApp
                 options.Cookie.IsEssential = true;
                 options.Cookie.Name = ".Family.Session";
             });
-            _productionConnectionString = Configuration["production_string"];
-            _developmentConnectionString = Configuration["development_string"];
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            Database.ConnectionString = !env.IsDevelopment() ? _productionConnectionString : _developmentConnectionString;
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -70,6 +65,9 @@ namespace FamilyApp
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
+
+            var db = new Database();
+            db.Database.EnsureCreated();
 
             app.UseStatusCodePagesWithRedirects("/Error/{0}");
 

@@ -8,7 +8,6 @@ namespace FamilyApp
 {
     public class Database : DbContext
     {
-        public static string ConnectionString = "";
         public DbSet<User> Users { get; set; }
 
         public DbSet<Family> Families { get; set; }
@@ -21,8 +20,7 @@ namespace FamilyApp
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var serverVerison = new MySqlServerVersion(new Version(8, 0, 25));
-            optionsBuilder.UseMySql(ConnectionString, serverVerison).EnableSensitiveDataLogging().EnableDetailedErrors();
+            optionsBuilder.UseSqlite("Data Source=family.db");
         }
     }
 }
