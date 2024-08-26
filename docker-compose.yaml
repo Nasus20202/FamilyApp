@@ -1,0 +1,9 @@
+services:
+  familyapp:
+    build: .
+    container_name: familyapp
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
