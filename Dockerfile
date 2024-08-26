@@ -2,7 +2,13 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 
 WORKDIR /build
 
-COPY . .
+COPY FamilyApp.sln .
+
+COPY FamilyApp/FamilyApp.csproj FamilyApp/
+
+RUN dotnet restore
+
+COPY FamilyApp/ FamilyApp/
 
 RUN dotnet publish FamilyApp -c Release -o out
 
