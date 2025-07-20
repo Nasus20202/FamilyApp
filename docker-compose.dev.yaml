@@ -1,6 +1,6 @@
 services:
   familyapp:
-    image: nasus20202/familyapp:latest
+    build: .
     container_name: familyapp
     restart: always
     ports:
